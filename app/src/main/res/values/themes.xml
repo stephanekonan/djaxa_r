@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme._5eQuiz" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme._5eQuiz" parent="Base.Theme._5eQuiz" />
+
+    <style name="Theme.Material" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/black_primary</item>
+        <item name="colorSecondary">@color/black_primary_opacity</item>
+        <item name="colorPrimaryDark">@color/black_secondary</item>
+        <item name="colorAccent">@color/black_primary</item>
+    </style>
+
+</resources>

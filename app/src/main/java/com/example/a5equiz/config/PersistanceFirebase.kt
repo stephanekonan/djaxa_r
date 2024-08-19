@@ -1,0 +1,1 @@
+package com.example.a5equiz.configimport android.app.Applicationimport com.google.firebase.database.FirebaseDatabaseclass PersistanceFirebase : Application() {    override fun onCreate() {        super.onCreate()        FirebaseDatabase.getInstance().setPersistenceEnabled(true)    }}
