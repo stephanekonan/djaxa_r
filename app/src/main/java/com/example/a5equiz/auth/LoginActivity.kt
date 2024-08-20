@@ -26,7 +26,6 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        supportActionBar?.hide()
         setContentView(R.layout.activity_login)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

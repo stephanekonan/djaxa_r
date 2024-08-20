@@ -35,6 +35,7 @@
                 tools:ignore="RtlSymmetry">
 
                 <ImageButton
+                    android:id="@+id/btnToBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -42,6 +43,7 @@
                     android:src="@drawable/ic_arrow_back"
                     app:tint="@color/black"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,11 +61,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/modifierBtn"
+                        app:layout_constraintEnd_toStartOf="@+id/editButton"
                         tools:ignore="HardcodedText" />
 
                     <Button
-                        android:id="@+id/modifierBtn"
+                        android:id="@+id/editButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Modifier"
@@ -131,8 +133,7 @@
                         android:background="#DBE1E0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -169,8 +170,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/usernameLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/usernameLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -189,7 +189,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/phoneCustomer"
+                            android:id="@+id/customerPhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -207,8 +207,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/amountLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/amountLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -227,7 +226,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/phoneModel"
+                            android:id="@+id/marquePhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -245,8 +244,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/emailLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/emailLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -265,7 +263,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/issue"
+                            android:id="@+id/issuePhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -284,8 +282,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/phoneLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -314,6 +311,7 @@
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
@@ -322,8 +320,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/montantNormalLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/montantNormalLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -352,6 +349,7 @@
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
@@ -360,8 +358,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/montantNegocieLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/montantNegocieLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -380,7 +377,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/description"
+                            android:id="@+id/descriptionRepair"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -398,8 +395,7 @@
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -418,7 +414,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/repairDate"
+                            android:id="@+id/dateDeposit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -437,12 +433,19 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dateLayout"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/dateLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/deleteBtn"

@@ -86,8 +86,15 @@
             android:paddingBottom="100dp"
             android:paddingHorizontal="16dp">
 
+            <TextView
+                android:layout_marginVertical="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mon stock en chiffres"
+                android:textColor="@color/black_primary"
+                android:fontFamily="@font/poppinssemibold" />
+
             <GridLayout
-                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2">
@@ -130,7 +137,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="30sp"
-                                android:text="50K"
+                                android:text="......"
                                 android:fontFamily="@font/poppinsbold"
                                 android:textColor="@color/white"
                                 android:layout_marginBottom="20dp"
@@ -226,7 +233,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="30sp"
-                                android:text="14K"
+                                android:text="......"
                                 android:fontFamily="@font/poppinsbold"
                                 android:textColor="@color/black_primary"
                                 android:layout_marginBottom="20dp"
@@ -310,6 +317,7 @@
                         android:layout_height="wrap_content"
                         android:text="Pièces vendues"
                         android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

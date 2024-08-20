@@ -21,7 +21,11 @@
             android:orientation="vertical"
             android:paddingTop="16dp"
             android:paddingBottom="100dp"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,7 +70,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppinsbold"
-                    android:text="Nombre de réparations"
+                    android:text="Aujour'hui, les données de réparations"
+                    android:textColor="@color/black_primary"
                     tools:ignore="HardcodedText" />
 
                 <GridLayout
@@ -87,39 +92,51 @@
                             android:background="@color/black_primary"
                             android:id="@+id/layoutData"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="80dp"
                             tools:ignore="UselessParent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:paddingVertical="2dp">
 
                                 <TextView
-                                    android:id="@+id/amountT"
+                                    android:id="@+id/totalAmountTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="30sp"
-                                    android:text="12"
+                                    android:text="15,5K"
                                     android:fontFamily="@font/poppinsregular"
                                     android:textColor="@color/white"
-                                    android:layout_marginBottom="20dp"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     tools:ignore="HardcodedText" />
-
 
                                 <TextView
                                     android:id="@+id/titleToDay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppinsregular"
-                                    android:textColor="#616161"
-                                    android:text="Aujourd'hui"
-                                    android:layout_marginBottom="10dp"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="14sp"
+                                    android:text="Recette"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:ignore="HardcodedText" />
+
+                                <TextView
+                                    android:id="@+id/devise"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:textColor="#616161"
+                                    android:text="F CFA"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
                                     tools:ignore="HardcodedText" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -140,7 +157,7 @@
                         <LinearLayout
                             android:background="@color/black_primary_opacity"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="80dp"
                             tools:ignore="UselessParent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,11 +165,11 @@
                                 android:layout_height="match_parent">
 
                                 <TextView
-                                    android:id="@+id/numberWeek"
+                                    android:id="@+id/totalCountTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="30sp"
-                                    android:text="84"
+                                    android:text="..."
                                     android:fontFamily="@font/poppinsregular"
                                     android:textColor="@color/black_primary"
                                     android:layout_marginBottom="20dp"
@@ -167,7 +184,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppinsregular"
                                     android:textColor="#616161"
-                                    android:text="Cette semaine"
+                                    android:text="Enregistrées"
                                     android:layout_marginBottom="10dp"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +208,7 @@
                         <LinearLayout
                             android:background="@color/black_primary_opacity"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="80dp"
                             tools:ignore="UselessParent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,11 +216,11 @@
                                 android:layout_height="match_parent">
 
                                 <TextView
-                                    android:id="@+id/numberMounth"
+                                    android:id="@+id/doneCountTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="30sp"
-                                    android:text="336"
+                                    android:text="..."
                                     android:fontFamily="@font/poppinsregular"
                                     android:textColor="@color/black_primary"
                                     android:layout_marginBottom="20dp"
@@ -218,7 +235,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppinsregular"
                                     android:textColor="#616161"
-                                    android:text="Ce mois"
+                                    android:text="Terminées"
                                     android:layout_marginBottom="10dp"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -246,6 +263,7 @@
                     android:layout_height="wrap_content"
                     android:text="Réparations récentes"
                     android:fontFamily="@font/poppinsbold"
+                    android:textColor="@color/black_primary"
                     tools:ignore="HardcodedText" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
@@ -273,7 +291,7 @@
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/customersRecyclerView"
+                    android:id="@+id/repairsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp" />

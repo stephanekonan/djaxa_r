@@ -19,12 +19,12 @@ import android.widget.TextView
 import com.example.a5equiz.R
 import com.example.a5equiz.bases.BaseActivity
 import com.example.a5equiz.config.ConstToast
-import com.example.a5equiz.models.Customer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -32,8 +32,8 @@ import java.util.Locale
 class CreateActivity : BaseActivity() {
 
     private lateinit var fullNameInput: EditText
-    private lateinit var phoneModelInput: EditText
-    private lateinit var phoneInput: TextView
+    private lateinit var phoneMarqueInput: EditText
+    private lateinit var phoneNumberInput: TextView
     private lateinit var descriptionInput: EditText
     private lateinit var issueInput: EditText
     private lateinit var montantNormal: EditText
@@ -58,8 +58,8 @@ class CreateActivity : BaseActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         fullNameInput = findViewById(R.id.fullName)
-        phoneInput = findViewById(R.id.phoneInput)
-        phoneModelInput = findViewById(R.id.phoneType)
+        phoneNumberInput = findViewById(R.id.phoneNumberInput)
+        phoneMarqueInput = findViewById(R.id.phoneMarqueInput)
         issueInput = findViewById(R.id.issueInput)
         descriptionInput = findViewById(R.id.descriptionInput)
         montantNormal = findViewById(R.id.montantNormal)
@@ -132,13 +132,10 @@ class CreateActivity : BaseActivity() {
                 selectedDate.set(Calendar.HOUR_OF_DAY, selectedHour)
                 selectedDate.set(Calendar.MINUTE, selectedMinute)
 
-                val repairDate = selectedDate.timeInMillis
-
                 val selectedDateTime = SimpleDateFormat(
                     "dd/MM/yyyy HH:mm", Locale.getDefault()
-                ).format(
-                    Date(repairDate)
-                )
+                ).format(selectedDate.time)
+
                 dateInput.setText(selectedDateTime)
             },
             hour, minute, true
@@ -160,7 +157,9 @@ class CreateActivity : BaseActivity() {
                 for (document in documents) {
                     val pieceName = document.getString("name") ?: "Unknown"
                     val pieceId = document.id
-                    val piecePrice = document.getString("price")?.toInt() ?: 0
+                    val piecePrice = document.get("price")?.let {
+                        (it as? Number)?.toInt() ?: 0
+                    } ?: 0
 
                     pieceNames.add(pieceName)
                     pieceIds.add(pieceId)
@@ -181,18 +180,25 @@ class CreateActivity : BaseActivity() {
     }
 
     private fun saveRepairToDatabase() {
+        val userId = mAuth.currentUser?.uid ?: return
         val pieceId = selectedPieceId ?: return
         val customerName = fullNameInput.text.toString().trim()
-        val customerPhone = phoneModelInput.text.toString().trim()
-        val marquePhone = phoneInput.text.toString().trim()
+        val customerPhone = phoneNumberInput.text.toString().trim()
+        val marquePhone = phoneMarqueInput.text.toString().trim()
         val issuePhone = issueInput.text.toString().trim()
         val descriptionRepair = descriptionInput.text.toString().trim()
         val montantNormalPiece = montantNormal.text.toString().trim()
         val montantNegociePiece = montantNegocie.text.toString().trim()
         val date = dateInput.text.toString().trim()
         val status = "enregistre"
+        val createdAtString =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+        val repairRef =
+            firestore.collection("users").document(userId).collection("repairs").document()
 
         val repair = hashMapOf(
+            "repairId" to repairRef.id,
             "pieceId" to pieceId,
             "customerName" to customerName,
             "customerPhone" to customerPhone,
@@ -201,37 +207,43 @@ class CreateActivity : BaseActivity() {
             "descriptionRepair" to descriptionRepair,
             "montantNormalPiece" to montantNormalPiece,
             "montantNegociePiece" to montantNegociePiece,
-            "dateDeposit " to date,
+            "dateDeposit" to date,
             "status" to status,
-            "createdAt" to FieldValue.serverTimestamp().toString()
+            "createdAt" to createdAtString
         )
 
-        saveRepairs(repair)
+        saveRepairs(repairRef, repair) { success ->
+            if (success) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
-    private fun saveRepairs(repair: Map<String, Any>) {
-
+    private fun saveRepairs(
+        repairRef: DocumentReference,
+        repair: Map<String, Any>,
+        onComplete: (Boolean) -> Unit
+    ) {
         val registerButton = findViewById<Button>(R.id.registerButton)
         val loadingProgressBar = findViewById<ProgressBar>(R.id.loadingProgressBar)
 
-        val userId = mAuth.currentUser?.uid ?: return
-        val recordRef =
-            firestore.collection("users").document(userId).collection("repairs").add(repair)
-        recordRef.addOnCompleteListener { task ->
+        registerButton.isEnabled = false
+        loadingProgressBar.visibility = View.VISIBLE
 
+        repairRef.set(repair).addOnCompleteListener { task ->
             registerButton.isEnabled = true
             loadingProgressBar.visibility = View.GONE
 
             if (task.isSuccessful) {
-                showToast(
-                    ConstToast.TOAST_TYPE_SUCCESS,
-                    "Client enregistré avec succès"
-                )
+                showToast(ConstToast.TOAST_TYPE_SUCCESS, "Client enregistré avec succès")
+                onComplete(true)
             } else {
                 showToast(
                     ConstToast.TOAST_TYPE_ERROR,
                     "Erreur lors de l'enregistrement des données"
                 )
+                onComplete(false)
             }
         }
     }

@@ -106,7 +106,7 @@
                     tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
 
                 <EditText
-                    android:id="@+id/phoneInput"
+                    android:id="@+id/phoneNumberInput"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="15dp"
@@ -124,7 +124,7 @@
                     tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
 
                 <EditText
-                    android:id="@+id/phoneType"
+                    android:id="@+id/phoneMarqueInput"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="15dp"

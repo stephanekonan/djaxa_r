@@ -2,4 +2,9 @@
     <string name="app_name">Djaxa.r</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_splash">Suivez, gérez et organisez toutes vos réparations en un seul endroit. Votre solution de registre ultime pour une gestion efficace et rapide.</string>
+    <string-array name="status_options">
+        <item>Enregistré</item>
+        <item>En Cours</item>
+        <item>Terminé</item>
+    </string-array>
 </resources>
