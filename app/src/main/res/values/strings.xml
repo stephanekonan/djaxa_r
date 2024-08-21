@@ -4,7 +4,7 @@
     <string name="text_splash">Suivez, gérez et organisez toutes vos réparations en un seul endroit. Votre solution de registre ultime pour une gestion efficace et rapide.</string>
     <string-array name="status_options">
         <item>Enregistré</item>
-        <item>En Cours</item>
+        <item>En cours</item>
         <item>Terminé</item>
     </string-array>
 </resources>

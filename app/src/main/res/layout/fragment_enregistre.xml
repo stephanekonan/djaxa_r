@@ -91,8 +91,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mon stock en chiffres"
+                android:textSize="18sp"
                 android:textColor="@color/black_primary"
-                android:fontFamily="@font/poppinssemibold" />
+                android:fontFamily="@font/poppinssemibold"
+                tools:ignore="HardcodedText" />
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -141,7 +143,7 @@
                                 android:fontFamily="@font/poppinsbold"
                                 android:textColor="@color/white"
                                 android:layout_marginBottom="20dp"
-                                android:layout_marginTop="30dp"
+                                android:layout_marginTop="35dp"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -156,6 +158,7 @@
                                 android:textColor="@color/gray_text"
                                 android:textSize="14sp"
                                 android:text="FCFA"
+                                android:layout_marginTop="15dp"
                                 app:layout_constraintStart_toEndOf="@+id/valueStock"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -168,28 +171,14 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppinsregular"
                                 android:textColor="#616161"
-                                android:textSize="14sp"
-                                android:text="vendues sur 1M 600K"
-                                android:layout_marginBottom="30dp"
+                                android:textSize="16sp"
+                                android:text="Valeur en stock"
+                                android:layout_marginBottom="15dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 tools:ignore="HardcodedText" />
 
-                            <com.google.android.material.progressindicator.LinearProgressIndicator
-                                android:id="@+id/LinearProgressIndicator"
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                app:indeterminateAnimationType="disjoint"
-                                app:trackColor="@color/gray_text"
-                                app:trackCornerRadius="100dp"
-                                app:trackThickness="@dimen/bottom_navigation_elevation"
-                                app:indicatorColor="@color/white"
-                                android:progress="90"
-                                android:max="100"
-                                android:layout_marginBottom="20dp"
-                                android:layout_marginHorizontal="16dp"
-                                app:layout_constraintBottom_toBottomOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -237,7 +226,7 @@
                                 android:fontFamily="@font/poppinsbold"
                                 android:textColor="@color/black_primary"
                                 android:layout_marginBottom="20dp"
-                                android:layout_marginTop="30dp"
+                                android:layout_marginTop="35dp"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -251,28 +240,13 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppinsregular"
                                 android:textColor="#616161"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:text="Pièces en stock"
-                                android:layout_marginBottom="30dp"
+                                android:layout_marginBottom="15dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 tools:ignore="HardcodedText" />
-
-                            <com.google.android.material.progressindicator.LinearProgressIndicator
-                                android:id="@+id/LinearProgressIndicator2"
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                app:indeterminateAnimationType="disjoint"
-                                app:trackColor="@color/white"
-                                app:trackCornerRadius="100dp"
-                                app:trackThickness="@dimen/bottom_navigation_elevation"
-                                app:indicatorColor="@color/black_primary"
-                                android:progress="75"
-                                android:max="100"
-                                android:layout_marginBottom="20dp"
-                                android:layout_marginHorizontal="16dp"
-                                app:layout_constraintBottom_toBottomOf="parent" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -315,9 +289,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pièces vendues"
+                        android:text="Pièces en stock"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black_primary"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

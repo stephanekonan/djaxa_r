@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment() {
             activity?.finish()
         }
 
-        fetchCustomers()
+        fetchTodayRepairs()
         fetchTodayTotalAmount()
         fetchTodayTotalCount()
         fetchTodayRepairsDoneCount()
@@ -78,38 +78,46 @@ class HomeFragment : BaseFragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun fetchCustomers() {
+    private fun fetchTodayRepairs() {
         val userId = auth.currentUser?.uid ?: return
         val repairsRef = firestore.collection("users").document(userId).collection("repairs")
+        val todayDateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        repairsRef.addSnapshotListener { snapshot, error ->
-            if (!isAdded) return@addSnapshotListener
+        repairsRef
+            .addSnapshotListener { snapshot, error ->
+                if (!isAdded) return@addSnapshotListener
 
-            if (error != null) {
-                Log.e("Firestore Error", error.message.toString())
-                showToast(ConstToast.TOAST_TYPE_ERROR, "Erreur lors de la récupération des données")
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                repairs.clear()
-                for (document in snapshot.documents) {
-                    val repair = document.toObject(Repair::class.java)
-                    if (repair != null) {
-                        repairs.add(repair)
-                    }
+                if (error != null) {
+                    Log.e("Firestore Error", error.message.toString())
+                    showToast(
+                        ConstToast.TOAST_TYPE_ERROR,
+                        "Erreur lors de la récupération des données"
+                    )
+                    return@addSnapshotListener
                 }
-                shimmerLayout.stopShimmer()
-                shimmerLayout.visibility = View.GONE
-                noFoundDataLayout.visibility = View.GONE
-            } else {
-                shimmerLayout.stopShimmer()
-                shimmerLayout.visibility = View.GONE
-                noFoundDataLayout.visibility = View.VISIBLE
-            }
 
-            repairsAdapter.notifyDataSetChanged()
-        }
+                if (snapshot != null && !snapshot.isEmpty) {
+                    repairs.clear()
+                    for (document in snapshot.documents) {
+                        val createdAtString = document.getString("createdAt") ?: ""
+                        if (createdAtString.startsWith(todayDateString)) {
+                            val repair = document.toObject(Repair::class.java)
+                            if (repair != null) {
+                                repairs.add(repair)
+                            }
+                        }
+                    }
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    noFoundDataLayout.visibility = View.GONE
+                } else {
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    noFoundDataLayout.visibility = View.VISIBLE
+                }
+
+                repairsAdapter.notifyDataSetChanged()
+            }
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -120,7 +128,7 @@ class HomeFragment : BaseFragment() {
         val todayDateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         repairsRef
-            .whereEqualTo("status", "termine")
+            .whereIn("status", listOf(2, 3))
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("Firestore Error", error.message.toString())
@@ -155,6 +163,7 @@ class HomeFragment : BaseFragment() {
                 }
             }
     }
+
 
     @SuppressLint("DefaultLocale")
     private fun formatAmount(amount: Int): String {
@@ -205,7 +214,7 @@ class HomeFragment : BaseFragment() {
         val todayDateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         repairsRef
-            .whereEqualTo("status", "termine")
+            .whereEqualTo("status", 3)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("Firestore Error", error.message.toString())
@@ -228,7 +237,6 @@ class HomeFragment : BaseFragment() {
                 }
             }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -190,7 +190,7 @@ class CreateActivity : BaseActivity() {
         val montantNormalPiece = montantNormal.text.toString().trim()
         val montantNegociePiece = montantNegocie.text.toString().trim()
         val date = dateInput.text.toString().trim()
-        val status = "enregistre"
+        val status = 1
         val createdAtString =
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 

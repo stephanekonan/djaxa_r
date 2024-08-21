@@ -24,15 +24,15 @@ class UpdateActivity : BaseActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     private val statusMap = mapOf(
-        "Enregistré" to "enregistre",
-        "En cours" to "encours",
-        "Terminé" to "termine"
+        "Enregistré" to 1,
+        "En cours" to 2,
+        "Terminé" to 3
     )
 
     private val reverseStatusMap = mapOf(
-        "enregistre" to "Enregistré",
-        "encours" to "En cours",
-        "termine" to "Terminé"
+        1 to "Enregistré",
+        2 to "En cours",
+        3 to "Terminé"
     )
 
     @SuppressLint("MissingInflatedId")
@@ -50,7 +50,7 @@ class UpdateActivity : BaseActivity() {
         val customerPhone = intent.getStringExtra("CUSTOMER_PHONE")
         val descriptionRepair = intent.getStringExtra("DESCRIPTION_REPAIR")
         val montantNegocie = intent.getStringExtra("MONTANT_NEGOCIE")
-        val status = intent.getStringExtra("STATUS")
+        val status = intent.getIntExtra("STATUS", 0)
 
         val customerNameEditText: EditText = findViewById(R.id.customerName)
         val customerPhoneEditText: EditText = findViewById(R.id.customerPhoneNumber)
@@ -63,7 +63,7 @@ class UpdateActivity : BaseActivity() {
         descriptionRepairEditText.setText(descriptionRepair)
         montantNegocieEditText.setText(montantNegocie)
 
-        val statusOptions = if (status == "encours") {
+        val statusOptions = if (status == 2) {
             arrayOf("En cours", "Terminé")
         } else {
             arrayOf("Enregistré", "En cours", "Terminé")
@@ -73,7 +73,7 @@ class UpdateActivity : BaseActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         statusSpinner.adapter = adapter
 
-        status?.let {
+        status.let {
             val statusKey = reverseStatusMap[it]
             statusKey?.let { key ->
                 val position = statusOptions.indexOf(key)
@@ -85,15 +85,14 @@ class UpdateActivity : BaseActivity() {
 
         updateBtn.setOnClickListener {
             repairId?.let { id ->
-                val status: String =
-                    statusMap[statusSpinner.selectedItem.toString()] ?: "enregistre"
+                val selectedStatus = statusMap[statusSpinner.selectedItem.toString()] ?: 1
 
                 val updatedRepair = mapOf(
                     "customerName" to customerNameEditText.text.toString(),
                     "customerPhone" to customerPhoneEditText.text.toString(),
                     "descriptionRepair" to descriptionRepairEditText.text.toString(),
                     "montantNegociePiece" to montantNegocieEditText.text.toString(),
-                    "status" to status
+                    "status" to selectedStatus
                 )
 
                 updateRepair(id, updatedRepair, pieceId) { success ->
@@ -112,7 +111,7 @@ class UpdateActivity : BaseActivity() {
 
     private fun updateRepair(
         repairId: String,
-        repair: Map<String, String>,
+        repair: Map<String, Any>,
         pieceId: String?,
         onComplete: (Boolean) -> Unit
     ) {
@@ -136,7 +135,7 @@ class UpdateActivity : BaseActivity() {
                 loadingProgressBar.visibility = View.GONE
 
                 if (task.isSuccessful) {
-                    if (repair["status"] == "encours") {
+                    if (repair["status"] == 2) {
                         pieceId?.let { updatePieceQuantity(it) }
                     }
                     showToast(

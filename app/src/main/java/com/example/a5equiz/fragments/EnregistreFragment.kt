@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.a5equiz.R
 import com.example.a5equiz.adapters.PieceAdapter
 import com.example.a5equiz.bases.BaseFragment
+import com.example.a5equiz.config.ConstToast
 import com.example.a5equiz.models.PieceData
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 
 class EnregistreFragment : BaseFragment() {
 
@@ -29,209 +30,177 @@ class EnregistreFragment : BaseFragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mAuth: FirebaseAuth
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+    }
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        val view = inflater.inflate(R.layout.fragment_enregistre, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val categoriesContainer: LinearLayout = view.findViewById(R.id.categories_container)
         val addNewPieceBtn: Button = view.findViewById(R.id.addNewPieceBtn)
         recyclerView = view.findViewById(R.id.recyclerView)
 
-        val valueStockTextView: TextView = view.findViewById(R.id.valueStock)
-        val valueStockArticle: TextView = view.findViewById(R.id.valueStockArticle)
-        val deviseTextView: TextView = view.findViewById(R.id.devise)
-        val progressIndicator: LinearProgressIndicator =
-            view.findViewById(R.id.LinearProgressIndicator)
-        val LinearProgressIndicator2: LinearProgressIndicator =
-            view.findViewById(R.id.LinearProgressIndicator2)
-
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        pieceAdapter = PieceAdapter(emptyList())
+        recyclerView.adapter = pieceAdapter
 
         addNewPieceBtn.setOnClickListener {
             val recordFragment = AddPieceFragment()
             recordFragment.show(parentFragmentManager, recordFragment.tag)
         }
 
-        mAuth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        pieceAdapter = PieceAdapter(emptyList())
-        recyclerView.adapter = pieceAdapter
-
-        firestore.collection("categories").get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                val categoryName = document.getString("name") ?: "Unknown"
-
-                val categoryTextView = TextView(requireContext()).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        setMargins(0, 0, 8.dpToPx(), 0)
-                    }
-                    text = categoryName
-                    setBackgroundResource(R.drawable.badge_background)
-                    setPadding(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
-                    setTextColor(ContextCompat.getColor(context, R.color.black_primary))
-                }
-
-                categoriesContainer.addView(categoryTextView)
-            }
-        }
-            .addOnFailureListener { exception ->
-                Log.w("Firestore", "Error getting documents: ", exception)
-            }
-
+        fetchCategories(categoriesContainer)
         fetchPieces()
-
-        val userId = mAuth.currentUser?.uid
-
-        if (userId != null) {
-            firestore.collection("users").document(userId).collection("pieces").get()
-                .addOnSuccessListener { pieceDocuments ->
-                    var totalValue = 0.0
-                    var soldValue = 0.0
-
-                    val tasks = mutableListOf<Task<*>>()
-                    for (pieceDoc in pieceDocuments) {
-                        val pieceId = pieceDoc.id
-                        val piecePrice = pieceDoc.get("price") as? Number ?: 0
-                        val pieceQuantity = pieceDoc.getLong("quantity")?.toInt() ?: 0
-
-                        val pieceTotalValue = piecePrice.toDouble() * pieceQuantity
-                        totalValue += pieceTotalValue
-
-                        val soldTask = firestore.collection("repairs")
-                            .whereArrayContains("partsUsed", pieceId)
-                            .get()
-                            .addOnSuccessListener { repairDocs ->
-                                val soldQuantity = repairDocs.size()
-                                soldValue += piecePrice.toDouble() * soldQuantity
-                            }
-                        tasks.add(soldTask)
-                    }
-
-                    Tasks.whenAllSuccess<Void>(tasks).addOnCompleteListener {
-                        valueStockTextView.text = formatCurrency(soldValue)
-                        deviseTextView.text = "FCFA"
-
-                        val progressPercentage = if (totalValue > 0) {
-                            (soldValue / totalValue * 100).toInt()
-                        } else {
-                            0
-                        }
-                        progressIndicator.progress = progressPercentage
-                        progressIndicator.max = 100
-                        progressIndicator.setIndicatorColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.white
-                            )
-                        )
-                        progressIndicator.trackColor =
-                            ContextCompat.getColor(requireContext(), R.color.gray_text)
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.w("Firestore", "Error getting pieces data: ", exception)
-                }
+        calculateTotalStockValue { totalValue ->
+            if (isAdded) {
+                val totalValueTextView = view.findViewById<TextView>(R.id.valueStock)
+                totalValueTextView.text = formatCurrency(totalValue)
+            }
         }
-
-        if (userId != null) {
-            firestore.collection("users").document(userId).collection("pieces").get()
-                .addOnSuccessListener { pieceDocuments ->
-                    var totalStockValue = 0.0
-                    var totalAvailableStockValue = 0.0
-
-                    val tasks = mutableListOf<Task<*>>()
-                    for (pieceDoc in pieceDocuments) {
-                        val pieceId = pieceDoc.id
-                        val piecePrice = pieceDoc.get("price") as? Number ?: 0
-                        val pieceQuantity = pieceDoc.getLong("quantity")?.toInt() ?: 0
-
-                        val pieceTotalValue = piecePrice.toDouble() * pieceQuantity
-                        totalStockValue += pieceTotalValue
-
-                        val availableStockTask = firestore.collection("repairs")
-                            .whereArrayContains("partsUsed", pieceId)
-                            .get()
-                            .addOnSuccessListener { repairDocs ->
-                                val usedQuantity = repairDocs.size()
-                                totalAvailableStockValue += piecePrice.toDouble() * (pieceQuantity - usedQuantity)
-                            }
-                        tasks.add(availableStockTask)
-                    }
-
-                    Tasks.whenAllSuccess<Void>(tasks).addOnCompleteListener {
-                        valueStockArticle.text = formatCurrency(totalAvailableStockValue)
-                        LinearProgressIndicator2.max = totalStockValue.toInt()
-                        val progressPercentage = if (totalStockValue > 0) {
-                            (totalAvailableStockValue / totalStockValue * 100).toInt()
-                        } else {
-                            0
-                        }
-                        LinearProgressIndicator2.progress = progressPercentage
-                        LinearProgressIndicator2.setIndicatorColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.black_primary
-                            )
-                        )
-                        LinearProgressIndicator2.trackColor =
-                            ContextCompat.getColor(requireContext(), R.color.white)
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.w("Firestore", "Error getting pieces data: ", exception)
-                }
+        calculateTotalPieceCount { totalCountValue ->
+            if (isAdded) {
+                val totalValueTextView = view.findViewById<TextView>(R.id.valueStockArticle)
+                totalValueTextView.text = formatCurrency(totalCountValue)
+            }
         }
-
-        return view
     }
 
+    private fun fetchCategories(container: LinearLayout) {
+        firestore.collection("categories").get().addOnSuccessListener { documents ->
+            if (isAdded) {
+                for (document in documents) {
+                    val categoryName = document.getString("name") ?: "Unknown"
+
+                    val categoryTextView = TextView(requireContext()).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(0, 0, 8.dpToPx(), 0)
+                        }
+                        text = categoryName
+                        setBackgroundResource(R.drawable.badge_background)
+                        setPadding(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
+                        setTextColor(ContextCompat.getColor(context, R.color.black_primary))
+                    }
+
+                    container.addView(categoryTextView)
+                }
+            }
+        }.addOnFailureListener { exception ->
+            Log.w("Firestore", "Error getting documents: ", exception)
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun fetchPieces() {
-
         val userId = mAuth.currentUser?.uid ?: return
 
         firestore.collection("users").document(userId).collection("pieces").get()
             .addOnSuccessListener { documents ->
                 val pieces = mutableListOf<PieceData>()
-                val tasks = mutableListOf<Task<*>>()
+                val tasks = mutableListOf<Task<QuerySnapshot>>()
 
                 for (document in documents) {
                     val pieceId = document.id
                     val name = document.getString("name") ?: "Unknown"
                     val quantity = document.getLong("quantity")?.toInt() ?: 0
-                    val price = document.getDouble("price") as? Number ?: 0.0
+                    val price = document.getDouble("price") ?: 0.0
+                    val createdAt = document.getString("createdAt") ?: "Unknown"
 
-                    val pieceData = PieceData(name, quantity, price, 0)
+                    val pieceData = PieceData(name, quantity, price, 0, createdAt)
                     pieces.add(pieceData)
 
-                    val repairTask = firestore.collection("repairs")
-                        .whereArrayContains("partsUsed", pieceId)
+                    val repairTask2 = firestore.collection("users")
+                        .document(userId)
+                        .collection("repairs")
+                        .whereEqualTo("pieceId", pieceId)
+                        .whereEqualTo("status", 2)
                         .get()
-                        .addOnSuccessListener { repairDocs ->
-                            val usedQuantity = repairDocs.size()
-                            val updatedPiece =
-                                pieceData.copy(usedQuantity = usedQuantity, price = price)
-                            pieces[pieces.indexOf(pieceData)] = updatedPiece
-                            pieceAdapter.notifyDataSetChanged()
+
+                    val repairTask3 = firestore.collection("users")
+                        .document(userId)
+                        .collection("repairs")
+                        .whereEqualTo("pieceId", pieceId)
+                        .whereEqualTo("status", 3)
+                        .get()
+
+                    tasks.add(repairTask2)
+                    tasks.add(repairTask3)
+
+                    Tasks.whenAllComplete(repairTask2, repairTask3).addOnSuccessListener {
+                        if (isAdded) {
+                            val usedQuantity2 = repairTask2.result?.size() ?: 0
+                            val usedQuantity3 = repairTask3.result?.size() ?: 0
+                            val totalUsedQuantity = usedQuantity2 + usedQuantity3
+
+                            val updatedPiece = pieceData.copy(usedQuantity = totalUsedQuantity)
+                            val index = pieces.indexOfFirst { it.name == pieceData.name }
+                            if (index != -1) {
+                                pieces[index] = updatedPiece
+                            }
                         }
-                    tasks.add(repairTask)
+                    }
                 }
 
-                Tasks.whenAllSuccess<Void>(tasks).addOnCompleteListener {
-                    pieceAdapter = PieceAdapter(pieces)
-                    recyclerView.adapter = pieceAdapter
+                Tasks.whenAllComplete(tasks).addOnCompleteListener {
+                    if (isAdded) {
+                        pieceAdapter.updateData(pieces)
+                    }
                 }
             }.addOnFailureListener { exception ->
                 Log.w("Firestore", "Error getting pieces data: ", exception)
             }
+    }
+
+    private fun calculateTotalStockValue(onComplete: (Double) -> Unit) {
+        val userId = mAuth.currentUser?.uid ?: return
+        val piecesRef = firestore.collection("users").document(userId).collection("pieces")
+
+        piecesRef.get().addOnSuccessListener { querySnapshot ->
+            var totalValue = 0.0
+
+            for (document in querySnapshot.documents) {
+                val quantity = document.getLong("quantity") ?: 0
+                val price = document.getDouble("price") ?: 0.0
+                totalValue += quantity * price
+            }
+
+            onComplete(totalValue)
+        }.addOnFailureListener { e ->
+            showToast(
+                ConstToast.TOAST_TYPE_ERROR,
+                "Erreur lors du calcul de la valeur totale des pièces"
+            )
+            e.printStackTrace()
+            onComplete(0.0)
+        }
+    }
+
+    private fun calculateTotalPieceCount(onComplete: (Double) -> Unit) {
+        val userId = mAuth.currentUser?.uid ?: return
+        val piecesRef = firestore.collection("users").document(userId).collection("pieces")
+
+        piecesRef.get().addOnSuccessListener { querySnapshot ->
+            var totalPieces = 0.0
+
+            for (document in querySnapshot.documents) {
+                val quantity = document.getLong("quantity") ?: 0
+                totalPieces += quantity
+            }
+
+            onComplete(totalPieces)
+        }.addOnFailureListener { e ->
+            showToast(
+                ConstToast.TOAST_TYPE_ERROR,
+                "Erreur lors du calcul du nombre total de pièces en stock"
+            )
+            e.printStackTrace()
+            onComplete(0.0)
+        }
     }
 
     private fun Int.dpToPx(): Int {
@@ -247,4 +216,13 @@ class EnregistreFragment : BaseFragment() {
             else -> String.format("%.0f", value)
         }
     }
+
+    @SuppressLint("MissingInflatedId", "CutPasteId")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_enregistre, container, false)
+    }
 }
+

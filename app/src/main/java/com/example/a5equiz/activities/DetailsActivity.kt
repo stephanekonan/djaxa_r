@@ -48,7 +48,14 @@ class DetailsActivity : BaseActivity() {
         val marquePhone = intent.getStringExtra("MARQUE_PHONE")
         val montantNegocie = intent.getStringExtra("MONTANT_NEGOCIE")
         val montantNormal = intent.getStringExtra("MONTANT_NORMAL")
-        val status = intent.getStringExtra("STATUS")
+        val status = intent.getIntExtra("STATUS", 0)
+
+        val statusText = when (status) {
+            1 -> "enregistre"
+            2 -> "en cours"
+            3 -> "termine"
+            else -> "inconnu"
+        }
 
         findViewById<TextView>(R.id.customerName).text = customerName
         findViewById<TextView>(R.id.customerPhone).text = customerPhone
@@ -58,14 +65,14 @@ class DetailsActivity : BaseActivity() {
         findViewById<TextView>(R.id.marquePhone).text = marquePhone
         findViewById<TextView>(R.id.montantNegocie).text = montantNegocie.plus(" F CFA")
         findViewById<TextView>(R.id.montantNormal).text = montantNormal.plus(" F CFA")
-        findViewById<TextView>(R.id.status).text = status
+        findViewById<TextView>(R.id.status).text = statusText
 
-        if (status == "encours") {
+        if (status == 2) {
             deleteBtn.isEnabled = false
             deleteBtn.visibility = View.GONE
         }
 
-        if (status == "termine") {
+        if (status == 3) {
             deleteBtn.isEnabled = false
             deleteBtn.visibility = View.GONE
             editButton.isEnabled = false

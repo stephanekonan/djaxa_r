@@ -1,5 +1,6 @@
 package com.example.a5equiz.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,8 +12,10 @@ import com.example.a5equiz.R
 import com.example.a5equiz.activities.DetailsActivity
 import com.example.a5equiz.models.Repair
 
-class RepairAdapter(private val context: Context, private val repairs: List<Repair>) :
-    RecyclerView.Adapter<RepairAdapter.RepairViewHolder>() {
+class RepairSearchAdapter(private val context: Context, private var repairs: List<Repair>) :
+    RecyclerView.Adapter<RepairSearchAdapter.RepairViewHolder>() {
+
+    private var filteredRepairs: List<Repair> = repairs
 
     inner class RepairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val customerName: TextView = itemView.findViewById(R.id.customerName)
@@ -35,7 +38,7 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
     }
 
     override fun onBindViewHolder(holder: RepairViewHolder, position: Int) {
-        val repair = repairs[position]
+        val repair = filteredRepairs[position]
 
         holder.customerName.text = repair.customerName
         holder.customerPhone.text = repair.customerPhone
@@ -76,6 +79,27 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
         }
     }
 
-    override fun getItemCount(): Int = repairs.size
+    override fun getItemCount(): Int = filteredRepairs.size
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: List<Repair>) {
+        repairs = newList
+        filteredRepairs = newList
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filter(query: String) {
+        filteredRepairs = if (query.isEmpty()) {
+            repairs
+        } else {
+            repairs.filter {
+                it.customerName.contains(query, ignoreCase = true) ||
+                        it.customerPhone.contains(query, ignoreCase = true) ||
+                        it.marquePhone.contains(query, ignoreCase = true) ||
+                        it.issuePhone.contains(query, ignoreCase = true)
+            }
+        }
+        notifyDataSetChanged()
+    }
 }

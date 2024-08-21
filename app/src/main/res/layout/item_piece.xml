@@ -18,49 +18,60 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ecran X612"
+            android:textSize="16sp"
+            android:textColor="@color/black_primary"
+            android:fontFamily="@font/poppinssemibold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="HardcodedText" />
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressIndicator"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
-            app:indeterminateAnimationType="disjoint"
-            app:trackColor="@color/black_primary_opacity"
-            app:trackCornerRadius="100dp"
-            app:trackThickness="@dimen/bottom_navigation_elevation"
-            android:layout_marginTop="5dp"
-            app:indicatorColor="@color/gray"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titlePiece" />
-
         <TextView
-            android:id="@+id/prixValuePiece"
+            android:id="@+id/prixUnitaire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/devisePiece"
-            android:text="200K"
-            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="PU = 2000 F CFA"
             android:layout_marginEnd="5dp"
-            android:fontFamily="@font/poppinsbold"
+            android:fontFamily="@font/poppinsregular"
             android:textColor="@color/black_primary"
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/devisePiece"
+            android:id="@+id/usedQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Quantité utilisée: 23"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black_primary"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titlePiece" />
+
+        <TextView
+            android:id="@+id/remainingQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantité restante: 42"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black_primary"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titlePiece"/>
+
+        <TextView
+            android:id="@+id/createdAtPiece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/usedQuantity"
+            android:text="jeudi 19 Aout 2024"
             android:fontFamily="@font/poppinsregular"
             android:textColor="@color/gray_text"
-            android:textSize="10sp"
-            android:text="FCFA"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

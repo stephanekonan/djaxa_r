@@ -11,8 +11,8 @@ data class Repair(
     val montantNegociePiece: String = "",
     val montantNormalPiece: String = "",
     val pieceId: String = "",
-    val status: String = "",
+    val status: Int = 0,
     var createdAt: String = ""
 ) {
-    constructor() : this("", "", "", "", "", "", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", "", "", "", 0, "")
 }

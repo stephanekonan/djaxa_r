@@ -1,5 +1,6 @@
 package com.example.a5equiz.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.example.a5equiz.R
 import com.example.a5equiz.models.PieceData
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
-class PieceAdapter(private val pieces: List<PieceData>) :
+class PieceAdapter(private var pieces: List<PieceData>) :
     RecyclerView.Adapter<PieceAdapter.PieceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PieceViewHolder {
@@ -24,28 +25,32 @@ class PieceAdapter(private val pieces: List<PieceData>) :
 
     override fun getItemCount(): Int = pieces.size
 
-    inner class PieceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titlePiece: TextView = itemView.findViewById(R.id.titlePiece)
-        private val progressIndicator: LinearProgressIndicator =
-            itemView.findViewById(R.id.progressIndicator)
-        private val prixValuePiece: TextView = itemView.findViewById(R.id.prixValuePiece)
-        private val devisePiece: TextView = itemView.findViewById(R.id.devisePiece)
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newPieces: List<PieceData>) {
+        pieces = newPieces
+        notifyDataSetChanged()
+    }
 
+    inner class PieceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val titlePiece: TextView = itemView.findViewById(R.id.titlePiece)
+        private val createdAtPiece: TextView = itemView.findViewById(R.id.createdAtPiece)
+        private val usedQuantityView: TextView = itemView.findViewById(R.id.usedQuantity)
+        private val remainingQuantityView: TextView = itemView.findViewById(R.id.remainingQuantity)
+        private val prixUnitaire: TextView = itemView.findViewById(R.id.prixUnitaire)
+
+        @SuppressLint("SetTextI18n")
         fun bind(piece: PieceData) {
             titlePiece.text = piece.name
+            createdAtPiece.text = piece.createdAt
+            prixUnitaire.text = "PU = ${piece.price} F CFA"
 
             val usedQuantity = piece.usedQuantity
-            val price = piece.price.toDouble()
+            val remainingQuantity = piece.quantity
 
-            val progressPercentage =
-                if (piece.quantity > 0) (piece.usedQuantity.toDouble() / piece.quantity * 100).toInt() else 0
-            progressIndicator.apply {
-                max = 100
-                progress = progressPercentage
-            }
-
-            val totalPrice = usedQuantity * price
-            prixValuePiece.text = "${totalPrice.toInt()}"
+            usedQuantityView.text = "Quantité utilisée: $usedQuantity"
+            remainingQuantityView.text = "Quantité restante: $remainingQuantity"
         }
     }
+
 }
