@@ -18,6 +18,7 @@ androidx_lifecycle = "2.6.1"
 lifecycleViewmodelKtx = "2.6.1"
 firebaseDatabase = "21.0.0"
 firebaseFirestoreKtx = "25.0.0"
+pinview = "1.4.4"
 shimmer = "0.5.0"
 places = "3.5.0"
 firebaseCrashlyticsBuildtools = "3.0.2"
@@ -39,6 +40,7 @@ androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-lived
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+pinview = { module = "io.github.chaosleung:pinview", version.ref = "pinview" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }

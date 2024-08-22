@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.ahbottomnavigation)
     implementation(libs.shimmer)
+    implementation(libs.pinview)
     val room_version = "2.6.0"
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")

@@ -16,6 +16,7 @@ import com.example.a5equiz.R
 import com.example.a5equiz.activities.MainActivity
 import com.example.a5equiz.bases.BaseActivity
 import com.example.a5equiz.config.ConstToast
+import com.example.a5equiz.config.MyApplication
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity() {
@@ -35,6 +36,7 @@ class LoginActivity : BaseActivity() {
         auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
+            (application as MyApplication).onUserConnected()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -95,6 +97,9 @@ class LoginActivity : BaseActivity() {
                 loadingProgressBar.visibility = android.view.View.GONE
 
                 if (task.isSuccessful) {
+                    (application as MyApplication).onUserConnected()
+                    (application as MyApplication).onCodeValidated()
+                    
                     showToast(ConstToast.TOAST_TYPE_SUCCESS, "Vous êtes connectés")
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.random.Random
 
 class RegisterActivity : BaseActivity() {
 
@@ -136,7 +137,6 @@ class RegisterActivity : BaseActivity() {
         password: String,
         locationClient: String
     ) {
-
         val registerButton = findViewById<Button>(R.id.registerUserButton)
         val loadingProgressBar = findViewById<ProgressBar>(R.id.loadingProgressBar)
 
@@ -153,25 +153,39 @@ class RegisterActivity : BaseActivity() {
                 val user = auth.currentUser
                 val userId = user?.uid
 
-                val userData = hashMapOf(
-                    "username" to username,
-                    "phoneNumber" to phoneNumber,
-                    "nameCompany" to nameCompany,
-                    "locationClient" to locationClient,
-                    "email" to email,
-                    "role" to "client",
-                    "createdAt" to FieldValue.serverTimestamp().toString()
-                )
-
                 if (userId != null) {
+                    val accessCode = generateFourDigitalCode()
+
+                    val userData = hashMapOf(
+                        "username" to username,
+                        "phoneNumber" to phoneNumber,
+                        "nameCompany" to nameCompany,
+                        "locationClient" to locationClient,
+                        "email" to email,
+                        "role" to "client",
+                        "accessCode" to "$accessCode",
+                        "firstLogin" to true,
+                        "createdAt" to FieldValue.serverTimestamp()
+                    )
+
                     val recordRef = firestore.collection("users").document(userId).set(userData)
                     recordRef.addOnCompleteListener {
-                        showToast(ConstToast.TOAST_TYPE_SUCCESS, "Vous êtes bien enregistrée")
+                        showToast(ConstToast.TOAST_TYPE_SUCCESS, "Vous êtes bien enregistré")
+                        auth.signOut()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }.addOnFailureListener { exception ->
+                        showToast(
+                            ConstToast.TOAST_TYPE_ERROR,
+                            "Erreur lors de l'enregistrement: ${exception.message}"
+                        )
                     }
-                    auth.signOut()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                } else {
+                    showToast(
+                        ConstToast.TOAST_TYPE_ERROR,
+                        "Utilisateur non trouvé après la création du compte."
+                    )
                 }
 
             } else {
@@ -182,6 +196,10 @@ class RegisterActivity : BaseActivity() {
             }
         }
 
+    }
+
+    private fun generateFourDigitalCode(): Int {
+        return Random.nextInt(1000, 10000)
     }
 
 
