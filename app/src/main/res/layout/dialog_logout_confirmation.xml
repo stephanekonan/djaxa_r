@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:background="@drawable/custom_card">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirmation"
+        android:textSize="22sp"
+        android:textColor="@color/black_primary"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Êtes-vous sûr de vouloir déconnecter ?"
+        android:textSize="16sp"
+        android:textColor="@color/black_primary"
+        android:fontFamily="@font/poppinsregular"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        tools:ignore="HardcodedText" />
+
+    <GridLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3">
+
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/custom_decline_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Non"
+            android:textColor="@color/black_primary"
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/confirmButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/custom_confirm_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Oui"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+    </GridLayout>
+
+</LinearLayout>

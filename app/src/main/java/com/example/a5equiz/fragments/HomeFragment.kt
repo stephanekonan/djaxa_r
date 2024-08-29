@@ -1,24 +1,28 @@
 package com.example.a5equiz.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a5equiz.R
+import com.example.a5equiz.activities.RepairsActivity
 import com.example.a5equiz.adapters.RepairAdapter
 import com.example.a5equiz.auth.LoginActivity
 import com.example.a5equiz.bases.BaseFragment
 import com.example.a5equiz.config.ConstToast
 import com.example.a5equiz.models.Repair
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -44,6 +48,7 @@ class HomeFragment : BaseFragment() {
         firestore = FirebaseFirestore.getInstance()
     }
 
+    @SuppressLint("InflateParams", "MissingInflatedId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,15 +64,16 @@ class HomeFragment : BaseFragment() {
         doneCountTextView = view.findViewById(R.id.doneCountTextView)
 
         val logoutButton = view.findViewById<ImageButton>(R.id.logoutButton)
+        val seeMoreBtn = view.findViewById<TextView>(R.id.seeMore)
 
         logoutButton.setOnClickListener {
+            val bottomSheetDialog = LogoutDialogFragment()
+            bottomSheetDialog.show(parentFragmentManager, "CustomBottomSheetDialog")
+        }
 
-            auth.signOut()
-            showToast(ConstToast.TOAST_TYPE_SUCCESS, "Déconnecté avec succès")
-
-            val intent = Intent(activity, LoginActivity::class.java)
+        seeMoreBtn.setOnClickListener {
+            val intent = Intent(requireContext(), RepairsActivity::class.java)
             startActivity(intent)
-            activity?.finish()
         }
 
         fetchTodayRepairs()
@@ -163,7 +169,6 @@ class HomeFragment : BaseFragment() {
                 }
             }
     }
-
 
     @SuppressLint("DefaultLocale")
     private fun formatAmount(amount: Int): String {

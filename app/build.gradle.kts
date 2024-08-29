@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.places)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

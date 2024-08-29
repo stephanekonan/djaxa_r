@@ -7,271 +7,188 @@
     android:layout_height="match_parent"
     tools:context=".activities.CreateActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/appBarProfile"
+            <EditText
+                android:id="@+id/fullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="25dp"
-                android:paddingTop="25dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="RtlSymmetry">
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Nom du client"
+                android:inputType="text"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
 
-                <ImageButton
-                    android:id="@+id/btnToBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/black"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:id="@+id/profilTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Nouveau client"
-                        android:textColor="@color/black"
-                        android:textSize="25sp"
-                        android:fontFamily="@font/poppinsmedium"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        tools:ignore="HardcodedText" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#74000000"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profileData"
+            <EditText
+                android:id="@+id/phoneNumberInput"
                 android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Numéro de téléphone"
+                android:inputType="phone"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
+
+            <EditText
+                android:id="@+id/phoneMarqueInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="La marque et modèle du téléphone"
+                android:inputType="text"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TextContrastCheck,TextFields,TouchTargetSizeCheck,VisualLintTextFieldSize" />
+
+            <EditText
+                android:id="@+id/numeroSeriePhone"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Numéro de série du téléphone"
+                android:inputType="text"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TextContrastCheck,TextFields,TouchTargetSizeCheck,VisualLintTextFieldSize" />
+
+            <EditText
+                android:id="@+id/issueInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Indiquer la panne"
+                android:inputType="text"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
+
+            <EditText
+                android:id="@+id/dateInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Date"
+                android:inputType="none"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,TextContrastCheck,TextFields,TouchTargetSizeCheck,VisualLintTextFieldSize" />
+
+            <Spinner
+                android:id="@+id/pieceId"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:spinnerMode="dropdown"
+                android:paddingStart="10dp"
+                android:background="@drawable/custom_input"
+                tools:ignore="RtlSymmetry,TouchTargetSizeCheck" />
+
+            <EditText
+                android:id="@+id/montantNormal"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Monant normal"
+                android:inputType="number"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:clickable="false"
+                tools:ignore="Autofill,HardcodedText,RtlSymmetry,TextContrastCheck,TouchTargetSizeCheck,VisualLintTextFieldSize" />
+
+            <EditText
+                android:id="@+id/montantNegocie"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/custom_input"
+                android:paddingStart="20dp"
+                android:ems="10"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Montant négocié"
+                android:inputType="number"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black_primary"
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="25dp"
-                android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/appBarProfile"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="RtlSymmetry">
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-                <EditText
-                    android:id="@+id/fullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Nom du client"
-                    android:inputType="text"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black_primary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/phoneNumberInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Numéro de téléphone"
-                    android:inputType="phone"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/phoneMarqueInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Le téléphone (Exemple: Iphone 11)"
-                    android:inputType="text"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black_primary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TextContrastCheck,TextFields,TouchTargetSizeCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/issueInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Indiquer la panne"
-                    android:inputType="text"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black_primary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/dateInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Date"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="Autofill,HardcodedText,TextContrastCheck,TextFields,TouchTargetSizeCheck,VisualLintTextFieldSize" />
-
-                <Spinner
-                    android:id="@+id/pieceId"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:spinnerMode="dropdown"
-                    android:paddingStart="10dp"
-                    android:background="@drawable/custom_input"
-                    tools:ignore="RtlSymmetry,TouchTargetSizeCheck" />
-
-                <EditText
-                    android:id="@+id/montantNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Monant normal"
-                    android:inputType="number"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black_primary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    android:focusable="false"
-                    android:clickable="false"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/montantNegocie"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Montant négocié"
-                    android:inputType="number"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/black_primary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <EditText
-                    android:id="@+id/descriptionInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/custom_input_desc"
-                    android:paddingStart="20dp"
-                    android:fontFamily="@font/poppinsregular"
-                    android:hint="Laissez un commentaire"
-                    android:inputType="textMultiLine"
-                    android:lines="5"
-                    android:gravity="top"
-                    android:overScrollMode="always"
-                    android:scrollbars="vertical"
-                    android:scrollbarStyle="insideInset"
-                    android:padding="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/appBar"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
-
-                <ProgressBar
-                    android:id="@+id/loadingProgressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/registerButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/custom_buttom"
-                    android:gravity="center"
-                    android:text="ENREGISTRER"
-                    android:textColor="@color/white"
-                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/custom_buttom"
+                android:gravity="center"
+                android:text="ENREGISTRER"
+                android:textColor="@color/white"
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,9 +12,12 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import com.example.a5equiz.R
 import com.example.a5equiz.bases.BaseActivity
 import com.example.a5equiz.databinding.ActivityMainBinding
+import com.example.a5equiz.fragments.AddPieceFragment
 import com.example.a5equiz.fragments.EncoursFragment
 import com.example.a5equiz.fragments.EnregistreFragment
 import com.example.a5equiz.fragments.HomeFragment
+import com.example.a5equiz.fragments.ProfileFragment
+import com.example.a5equiz.fragments.RegistreClientFragment
 import com.example.a5equiz.fragments.TermineFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -60,11 +63,13 @@ class MainActivity : BaseActivity() {
         val item2 = AHBottomNavigationItem("Stock", R.drawable.ic_stock)
         val item3 = AHBottomNavigationItem("En cours", R.drawable.ic_encours)
         val item4 = AHBottomNavigationItem("Terminés", R.drawable.ic_termine)
+        val item5 = AHBottomNavigationItem("Profil", R.drawable.ic_person)
 
         bottomNavigation.addItem(item1)
         bottomNavigation.addItem(item2)
         bottomNavigation.addItem(item3)
         bottomNavigation.addItem(item4)
+        bottomNavigation.addItem(item5)
 
         bottomNavigation.setAccentColor(resources.getColor(R.color.black_primary))
         bottomNavigation.setInactiveColor(resources.getColor(R.color.gray))
@@ -83,6 +88,7 @@ class MainActivity : BaseActivity() {
                 1 -> EnregistreFragment()
                 2 -> EncoursFragment()
                 3 -> TermineFragment()
+                4 -> ProfileFragment()
                 else -> HomeFragment()
             }
             supportFragmentManager.beginTransaction()
@@ -91,8 +97,8 @@ class MainActivity : BaseActivity() {
         }
 
         floatingactionbutton.setOnClickListener {
-            val intent = Intent(this, CreateActivity::class.java)
-            startActivity(intent)
+            val recordFragment = RegistreClientFragment()
+            recordFragment.show(supportFragmentManager, recordFragment.tag)
         }
 
         setupEdgeToEdge(R.id.main)

@@ -23,8 +23,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
-class EnregistreFragment : BaseFragment() {
+class EnregistreFragment : BaseFragment(), AddPieceFragment.OnPieceAddedListener {
 
+    override fun onPieceAdded() {
+        fetchPieces()
+    }
+    
     private lateinit var firestore: FirebaseFirestore
     private lateinit var pieceAdapter: PieceAdapter
     private lateinit var recyclerView: RecyclerView

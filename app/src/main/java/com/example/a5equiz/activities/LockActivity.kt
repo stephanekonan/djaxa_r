@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
@@ -31,6 +32,7 @@ class LockActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_lock)
 
         if (userId == null) {
@@ -100,8 +102,10 @@ class LockActivity : AppCompatActivity() {
             }
             progressBar.visibility = View.GONE
         }.addOnFailureListener {
+            validateButton.isEnabled = true
+            validateButton.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            showToast(ConstToast.TOAST_TYPE_ERROR, "Erreur de connexion")
+            showToast(ConstToast.TOAST_TYPE_ERROR, "Vérifiez votre connexion internet")
         }
     }
 

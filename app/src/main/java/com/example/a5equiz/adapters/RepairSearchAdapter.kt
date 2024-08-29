@@ -21,7 +21,7 @@ class RepairSearchAdapter(private val context: Context, private var repairs: Lis
         val customerName: TextView = itemView.findViewById(R.id.customerName)
         val customerPhone: TextView = itemView.findViewById(R.id.phoneCustomer)
         val dateDeposit: TextView = itemView.findViewById(R.id.dateDeposit)
-        val descriptionRepair: TextView = itemView.findViewById(R.id.issue)
+        val numeroSeriePhone: TextView = itemView.findViewById(R.id.numeroSeriePhone)
         val issuePhone: TextView = itemView.findViewById(R.id.issue)
         val marquePhone: TextView = itemView.findViewById(R.id.phoneModel)
         val montantNegociePiece: TextView = itemView.findViewById(R.id.montantNegocie)
@@ -43,7 +43,7 @@ class RepairSearchAdapter(private val context: Context, private var repairs: Lis
         holder.customerName.text = repair.customerName
         holder.customerPhone.text = repair.customerPhone
         holder.dateDeposit.text = repair.dateDeposit
-        holder.descriptionRepair.text = repair.descriptionRepair
+        holder.numeroSeriePhone.text = repair.numeroSeriePhone
         holder.issuePhone.text = repair.issuePhone
         holder.marquePhone.text = repair.marquePhone
         holder.montantNegociePiece.text = repair.montantNegociePiece.plus(" F CFA")
@@ -68,7 +68,7 @@ class RepairSearchAdapter(private val context: Context, private var repairs: Lis
                 putExtra("CUSTOMER_NAME", repair.customerName)
                 putExtra("CUSTOMER_PHONE", repair.customerPhone)
                 putExtra("DATE_DEPOSIT", repair.dateDeposit)
-                putExtra("DESCRIPTION_REPAIR", repair.descriptionRepair)
+                putExtra("NUMERO_SERIE_PHONE", repair.numeroSeriePhone)
                 putExtra("ISSUE_PHONE", repair.issuePhone)
                 putExtra("MARQUE_PHONE", repair.marquePhone)
                 putExtra("MONTANT_NEGOCIE", repair.montantNegociePiece)

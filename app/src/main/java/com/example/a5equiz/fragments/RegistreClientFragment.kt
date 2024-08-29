@@ -1,104 +1,88 @@
-package com.example.a5equiz.activities
+package com.example.a5equiz.fragments
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.ScrollView
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.NestedScrollView
 import com.example.a5equiz.R
-import com.example.a5equiz.R.id.montantNegocie
-import com.example.a5equiz.bases.BaseActivity
+import com.example.a5equiz.bases.BaseBottomDialogFragment
 import com.example.a5equiz.config.ConstToast
+import com.example.a5equiz.databinding.FragmentRegistreClientBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CreateActivity : BaseActivity() {
+class RegistreClientFragment : BaseBottomDialogFragment() {
 
+    private lateinit var binding: FragmentRegistreClientBinding
     private lateinit var fullNameInput: EditText
+    private lateinit var phoneNumberInput: EditText
     private lateinit var phoneMarqueInput: EditText
-    private lateinit var phoneNumberInput: TextView
     private lateinit var numeroSeriePhone: EditText
     private lateinit var issueInput: EditText
     private lateinit var montantNormal: EditText
     private lateinit var montantNegocie: EditText
     private lateinit var dateInput: EditText
-    private lateinit var database: DatabaseReference
+    private lateinit var pieceId: Spinner
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var pieceId: Spinner
     private var pieceIds = mutableListOf<String>()
     private var pieceNames = mutableListOf<String>()
     private var piecePrices = mutableListOf<Any>()
     private var selectedPieceId: String? = null
 
-    @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create)
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
+    }
 
-        database = FirebaseDatabase.getInstance().reference
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentRegistreClientBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         firestore = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
 
-        fullNameInput = findViewById(R.id.fullName)
-        phoneNumberInput = findViewById(R.id.phoneNumberInput)
-        phoneMarqueInput = findViewById(R.id.phoneMarqueInput)
-        issueInput = findViewById(R.id.issueInput)
-        numeroSeriePhone = findViewById(R.id.numeroSeriePhone)
-        montantNormal = findViewById(R.id.montantNormal)
-        montantNegocie = findViewById(R.id.montantNegocie)
-        dateInput = findViewById(R.id.dateInput)
-        pieceId = findViewById(R.id.pieceId)
+        fullNameInput = view.findViewById(R.id.fullName)
+        phoneNumberInput = view.findViewById(R.id.phoneNumberInput)
+        phoneMarqueInput = view.findViewById(R.id.phoneMarqueInput)
+        issueInput = view.findViewById(R.id.issueInput)
+        numeroSeriePhone = view.findViewById(R.id.numeroSeriePhone)
+        montantNormal = view.findViewById(R.id.montantNormal)
+        montantNegocie = view.findViewById(R.id.montantNegocie)
+        dateInput = view.findViewById(R.id.dateInput)
+        pieceId = view.findViewById(R.id.pieceId)
 
         dateInput.inputType = InputType.TYPE_NULL
         dateInput.setOnClickListener {
             showDateTimePickerDialog()
         }
 
-        val nestedScrollView = findViewById<NestedScrollView>(R.id.nestedScrollView)
-        val editTexts = listOf<EditText>(
-            findViewById(R.id.montantNegocie),
-            findViewById(R.id.fullName),
-            findViewById(R.id.phoneNumberInput),
-            findViewById(R.id.phoneMarqueInput),
-            findViewById(R.id.numeroSeriePhone),
-            findViewById(R.id.issueInput),
-            findViewById(R.id.montantNormal)
-        )
-
-        editTexts.forEach { editText ->
-            editText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    nestedScrollView.post {
-                        nestedScrollView.smoothScrollTo(0, editText.bottom)
-                    }
-                }
-            }
-        }
-
-        val registerButton = findViewById<Button>(R.id.registerButton)
+        val registerButton = view.findViewById<TextView>(R.id.saveRecordBtn)
         registerButton.setOnClickListener {
             saveRepairToDatabase()
         }
@@ -113,64 +97,20 @@ class CreateActivity : BaseActivity() {
                 selectedPieceId = pieceIds[position]
                 val piecePrice = piecePrices[position]
 
-                findViewById<EditText>(R.id.montantNormal).setText(piecePrice.toString())
+                montantNormal.setText(piecePrice.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 selectedPieceId = null
-                findViewById<EditText>(R.id.montantNormal).text = null
+                montantNormal.text = null
             }
         }
 
         fetchPieces()
 
-        setupEdgeToEdge(R.id.main)
-    }
-
-    private fun showDateTimePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, selectedYear, selectedMonth, selectedDay ->
-                val selectedDate = Calendar.getInstance()
-                selectedDate.set(selectedYear, selectedMonth, selectedDay)
-
-                showTimePickerDialog(selectedDate)
-            },
-            year, month, day
-        )
-
-        datePickerDialog.show()
-    }
-
-    private fun showTimePickerDialog(selectedDate: Calendar) {
-        val hour = selectedDate.get(Calendar.HOUR_OF_DAY)
-        val minute = selectedDate.get(Calendar.MINUTE)
-
-        val timePickerDialog = TimePickerDialog(
-            this,
-            { _, selectedHour, selectedMinute ->
-                selectedDate.set(Calendar.HOUR_OF_DAY, selectedHour)
-                selectedDate.set(Calendar.MINUTE, selectedMinute)
-
-                val selectedDateTime = SimpleDateFormat(
-                    "dd/MM/yyyy HH:mm", Locale.getDefault()
-                ).format(selectedDate.time)
-
-                dateInput.setText(selectedDateTime)
-            },
-            hour, minute, true
-        )
-
-        timePickerDialog.show()
     }
 
     private fun fetchPieces() {
-
         val userId = mAuth.currentUser?.uid ?: return
 
         firestore.collection("users").document(userId).collection("pieces").get()
@@ -192,7 +132,7 @@ class CreateActivity : BaseActivity() {
                 }
 
                 val adapter = ArrayAdapter(
-                    this,
+                    requireContext(),
                     android.R.layout.simple_spinner_item,
                     pieceNames
                 )
@@ -202,6 +142,48 @@ class CreateActivity : BaseActivity() {
             .addOnFailureListener { exception ->
                 Log.w("Firestore", "Error getting pieces: ", exception)
             }
+    }
+
+    private fun showDateTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+
+                showTimePickerDialog(selectedDate)
+            },
+            year, month, day
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun showTimePickerDialog(selectedDate: Calendar) {
+        val hour = selectedDate.get(Calendar.HOUR_OF_DAY)
+        val minute = selectedDate.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            { _, selectedHour, selectedMinute ->
+                selectedDate.set(Calendar.HOUR_OF_DAY, selectedHour)
+                selectedDate.set(Calendar.MINUTE, selectedMinute)
+
+                val selectedDateTime = SimpleDateFormat(
+                    "dd/MM/yyyy HH:mm", Locale.getDefault()
+                ).format(selectedDate.time)
+
+                dateInput.setText(selectedDateTime)
+            },
+            hour, minute, true
+        )
+
+        timePickerDialog.show()
     }
 
     private fun saveRepairToDatabase() {
@@ -239,8 +221,7 @@ class CreateActivity : BaseActivity() {
 
         saveRepairs(repairRef, repair) { success ->
             if (success) {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                dismiss()
             }
         }
     }
@@ -250,15 +231,15 @@ class CreateActivity : BaseActivity() {
         repair: Map<String, Any>,
         onComplete: (Boolean) -> Unit
     ) {
-        val registerButton = findViewById<Button>(R.id.registerButton)
-        val loadingProgressBar = findViewById<ProgressBar>(R.id.loadingProgressBar)
+        val registerButton = view?.findViewById<TextView>(R.id.saveRecordBtn)
+        val loadingProgressBar = view?.findViewById<ProgressBar>(R.id.loadingProgressBar)
 
-        registerButton.isEnabled = false
-        loadingProgressBar.visibility = View.VISIBLE
+        registerButton?.isEnabled = false
+        loadingProgressBar?.visibility = View.VISIBLE
 
         repairRef.set(repair).addOnCompleteListener { task ->
-            registerButton.isEnabled = true
-            loadingProgressBar.visibility = View.GONE
+            registerButton?.isEnabled = true
+            loadingProgressBar?.visibility = View.GONE
 
             if (task.isSuccessful) {
                 showToast(ConstToast.TOAST_TYPE_SUCCESS, "Client enregistré avec succès")
@@ -272,5 +253,12 @@ class CreateActivity : BaseActivity() {
             }
         }
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        return dialog
+    }
+
 
 }

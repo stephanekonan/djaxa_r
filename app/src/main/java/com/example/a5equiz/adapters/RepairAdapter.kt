@@ -2,6 +2,7 @@ package com.example.a5equiz.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a5equiz.R
 import com.example.a5equiz.activities.DetailsActivity
+import com.example.a5equiz.fragments.DeleteDialogFragment
 import com.example.a5equiz.models.Repair
 
 class RepairAdapter(private val context: Context, private val repairs: List<Repair>) :
@@ -18,7 +20,7 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
         val customerName: TextView = itemView.findViewById(R.id.customerName)
         val customerPhone: TextView = itemView.findViewById(R.id.phoneCustomer)
         val dateDeposit: TextView = itemView.findViewById(R.id.dateDeposit)
-        val descriptionRepair: TextView = itemView.findViewById(R.id.issue)
+        val numeroSeriePhone: TextView = itemView.findViewById(R.id.numeroSeriePhone)
         val issuePhone: TextView = itemView.findViewById(R.id.issue)
         val marquePhone: TextView = itemView.findViewById(R.id.phoneModel)
         val montantNegociePiece: TextView = itemView.findViewById(R.id.montantNegocie)
@@ -40,7 +42,7 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
         holder.customerName.text = repair.customerName
         holder.customerPhone.text = repair.customerPhone
         holder.dateDeposit.text = repair.dateDeposit
-        holder.descriptionRepair.text = repair.descriptionRepair
+        holder.numeroSeriePhone.text = repair.numeroSeriePhone
         holder.issuePhone.text = repair.issuePhone
         holder.marquePhone.text = repair.marquePhone
         holder.montantNegociePiece.text = repair.montantNegociePiece.plus(" F CFA")
@@ -58,6 +60,7 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
         holder.status.text = statusText
 
         holder.itemView.setOnClickListener {
+
             val context = holder.itemView.context
             val intent = Intent(context, DetailsActivity::class.java).apply {
                 putExtra("REPAIR_ID", repair.repairId)
@@ -65,7 +68,7 @@ class RepairAdapter(private val context: Context, private val repairs: List<Repa
                 putExtra("CUSTOMER_NAME", repair.customerName)
                 putExtra("CUSTOMER_PHONE", repair.customerPhone)
                 putExtra("DATE_DEPOSIT", repair.dateDeposit)
-                putExtra("DESCRIPTION_REPAIR", repair.descriptionRepair)
+                putExtra("NUMERO_SERIE_PHONE", repair.numeroSeriePhone)
                 putExtra("ISSUE_PHONE", repair.issuePhone)
                 putExtra("MARQUE_PHONE", repair.marquePhone)
                 putExtra("MONTANT_NEGOCIE", repair.montantNegociePiece)

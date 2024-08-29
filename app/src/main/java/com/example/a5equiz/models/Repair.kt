@@ -5,7 +5,7 @@ data class Repair(
     val customerName: String = "",
     val customerPhone: String = "",
     val dateDeposit: String = "",
-    val descriptionRepair: String = "",
+    val numeroSeriePhone: String = "",
     val issuePhone: String = "",
     val marquePhone: String = "",
     val montantNegociePiece: String = "",

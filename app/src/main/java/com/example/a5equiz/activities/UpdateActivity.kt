@@ -66,7 +66,7 @@ class UpdateActivity : BaseActivity() {
         val statusOptions = if (status == 2) {
             arrayOf("En cours", "Terminé")
         } else {
-            arrayOf("Enregistré", "En cours", "Terminé")
+            arrayOf("Enregistré", "En cours")
         }
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
